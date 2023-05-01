@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"runtime"
 	"time"
 )
 
@@ -46,8 +47,10 @@ func start(showError bool) {
 }
 
 func main() {
+	runtime.GOMAXPROCS(1)
+
 	parser := argparse.NewParser("currencyChangeNotifier", "Program notifies you about changes in the exchange rate")
-	repeatApiRequestArg := parser.Int("r", "repeat", &argparse.Options{Required: false, Help: "Check currency data every some minutes. Default is 5 minutes", Default: 1})
+	repeatApiRequestArg := parser.Int("r", "repeat", &argparse.Options{Required: false, Help: "Check currency data every some minutes. Default is 5 minutes", Default: 5})
 	notifyAboutErrorsArg := parser.Flag("s", "show_error", &argparse.Options{Required: false, Help: "Notify about program errors", Default: false})
 	//currenciesListArg := parser.List("a", "additional_currencies", &argparse.Options{Required: false, Help: fmt.Sprintf("Additional list of currencies. Default are %s", strings.Join(defaultCurrenciesArray[:], ", ")), Default: defaultCurrenciesArray})
 
